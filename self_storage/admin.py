@@ -1,5 +1,24 @@
 from django.contrib import admin
-from .models import Warehouse, Box, Order, Lead
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from .models import Box, Lead, Order, User, Warehouse
+
+
+@admin.register(User)
+class CustomUserAdmin(BaseUserAdmin):
+    list_display = (
+        "username",
+        "email",
+        "phone",
+        "is_staff",
+        "is_active",
+    )
+    search_fields = ("username", "email", "phone")
+    fieldsets = BaseUserAdmin.fieldsets + (
+        ("Дополнительная информация", {"fields": ("phone",)}),
+    )
+    add_fieldsets = BaseUserAdmin.add_fieldsets + (
+        ("Дополнительная информация", {"fields": ("phone",)}),
+    )
 
 
 @admin.register(Warehouse)
@@ -9,8 +28,9 @@ class WarehouseAdmin(admin.ModelAdmin):
         "address",
         "temperature",
         "ceiling_height",
-        "advantage"
+        "advantage",
     )
+    list_filter = ("city",)
     search_fields = ("city", "address")
 
 
@@ -22,14 +42,15 @@ class BoxAdmin(admin.ModelAdmin):
         "floor",
         "area",
         "price",
-        "status"
+        "status",
     )
     list_filter = (
         "status",
         "warehouse",
-        "floor"
+        "floor",
     )
-    search_fields = ("number",)
+    search_fields = ("number", "warehouse__address")
+    list_editable = ("status", "price")
 
 
 @admin.register(Order)
@@ -41,20 +62,24 @@ class OrderAdmin(admin.ModelAdmin):
         "start_date",
         "end_date",
         "status",
-        "need_delivery"
+        "need_delivery",
+        "created_at",
     )
     list_filter = (
         "status",
         "need_delivery",
         "start_date",
-        "end_date"
+        "end_date",
     )
     search_fields = (
         "user__username",
         "user__email",
+        "user__phone",
         "box__number",
-        "client_address"
+        "client_address",
     )
+    readonly_fields = ("created_at",)
+    list_editable = ("status",)
 
 
 @admin.register(Lead)
@@ -64,7 +89,9 @@ class LeadAdmin(admin.ModelAdmin):
         "email",
         "phone",
         "created_at",
-        "is_processed"
+        "is_processed",
     )
     list_filter = ("is_processed", "created_at")
     search_fields = ("email", "phone")
+    list_editable = ("is_processed",)
+    readonly_fields = ("created_at",)

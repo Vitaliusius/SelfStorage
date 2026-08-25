@@ -17,7 +17,6 @@ DEBUG = env("DEBUG")
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -59,16 +58,12 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-
-
 DATABASES = {
     "default": env.db_url(
         "DATABASE_URL",
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
     )
 }
-
-
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -87,8 +82,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
-
 LANGUAGE_CODE = "ru-ru"
 
 TIME_ZONE = "Europe/Moscow"
@@ -98,15 +91,24 @@ USE_I18N = True
 USE_TZ = True
 
 
-
-
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "self_storage.User"
+
+AUTHENTICATION_BACKENDS = [
+    "self_storage.services.backends.EmailOrUsernameModelBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+LOGIN_URL = "self_storage:index"
+LOGIN_REDIRECT_URL = "self_storage:my_rent"
+LOGOUT_REDIRECT_URL = "self_storage:index"

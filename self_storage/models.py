@@ -1,6 +1,18 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.db import models
+
+
+class User(AbstractUser):
+    phone = models.CharField("Телефон", max_length=20, blank=True)
+    email = models.EmailField("Email", unique=True)
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+
+    def __str__(self):
+        return self.username
 
 
 class Warehouse(models.Model):
@@ -68,7 +80,8 @@ class Box(models.Model):
     )
     price = models.DecimalField(
         "Цена аренды за месяц (₽)",
-        max_digits=10, decimal_places=2,
+        max_digits=10,
+        decimal_places=2,
         validators=[MinValueValidator(0)]
     )
     status = models.CharField(
@@ -141,8 +154,15 @@ class Order(models.Model):
 
 
 class Lead(models.Model):
-    email = models.EmailField("E-mail клиента", blank=True)
-    phone = models.CharField("Телефон", max_length=20, blank=True)
+    email = models.EmailField(
+        "E-mail клиента",
+        blank=True
+    )
+    phone = models.CharField(
+        "Телефон",
+        max_length=20,
+        blank=True
+    )
     created_at = models.DateTimeField("Дата заявки", auto_now_add=True)
     is_processed = models.BooleanField("Обработано", default=False)
 
