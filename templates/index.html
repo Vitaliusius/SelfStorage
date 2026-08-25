@@ -20,7 +20,7 @@
 			<img src="{% static 'img/SelfStorage.svg' %}" alt="SelfStorage">
 		</a>
 		<div class="collapse navbar-collapse justify-content-end" id="navbar">
-			<ul class="navbar-nav">
+			<ul class="navbar-nav align-items-center">
 				<li class="nav-item me-5">
 					<a class="nav-link SelfStorage_black" href="{% url 'self_storage:boxes' %}">Рассчитать стоимость</a>
 				</li>
@@ -30,9 +30,20 @@
 				<li class="nav-item me-5">
 					<a class="nav-link SelfStorage_black" href="{% url 'self_storage:boxes' %}">Арендовать бокс</a>
 				</li>
+
+				{% if user.is_authenticated %}
+				<li class="nav-item me-4">
+					<a class="nav-link SelfStorage_green fw-bold" href="{% url 'self_storage:my_rent' %}">Личный кабинет</a>
+				</li>
+				<li class="nav-item me-5">
+					<a class="nav-link text-muted" href="{% url 'self_storage:logout' %}">Выйти</a>
+				</li>
+				{% else %}
 				<li class="nav-item me-5">
 					<a class="nav-link SelfStorage_green" href="#" data-bs-toggle="modal" data-bs-target="#SignModal">Войти</a>
 				</li>
+				{% endif %}
+
 				<li class="nav-item d-flex align-items-center">
 					<div class="d-flex justify-content-center align-items-center rounded-pill SelfStorage__bg_green me-2" style="height: 36px; width: 36px;">
 						<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="white" class="bi bi-telephone-fill" viewBox="0 0 16 16">
@@ -44,46 +55,60 @@
 			</ul>
 		</div>
 	</nav>
-</header><aside class="modal fade" id="RegModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</header>
+
+<!-- Модальное окно Регистрации -->
+<aside class="modal fade" id="RegModal" tabindex="-1" aria-labelledby="RegModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
 		<div class="modal-content">
 			<div class="modal-header border-0">
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body d-flex justify-content-center align-items-center">
-				<form class="d-flex flex-column align-items-center" style="max-width: 420px">
+				<form method="post" action="{% url 'self_storage:register' %}" class="d-flex flex-column align-items-center" style="max-width: 420px">
+					{% csrf_token %}
 					<h1 class="modal-title text-center fw-bold mb-3">Регистрация</h1>
-					<input type="email" required name="EMAIL_CREATE" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="E-mail">
-					<input type="password" required name="PASSWORD_CREATE" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Пароль">
-					<input type="password" required name="PASSWORD_CONFIRM" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Подтверждение пароля">
-					<span class="fw-light SelfStorage_grey">Нажимая на кнопку, вы подтверждаете свое <a href="#" class="SelfStorage_grey">согласие на обработку персональных данных</a></span>
-					<button class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Зарегистрироваться</button>
+					<input type="email" required name="email" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="E-mail">
+					<input type="tel" name="phone" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Телефон">
+					<input type="password" required name="password" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Пароль">
+					<div class="form-check mb-3">
+						<input class="form-check-input" type="checkbox" name="agree" id="agreeReg" required checked>
+						<label class="form-check-label fw-light SelfStorage_grey" for="agreeReg">
+							Нажимая на кнопку, вы подтверждаете свое <a href="#" class="SelfStorage_grey">согласие на обработку персональных данных</a>
+						</label>
+					</div>
+					<button type="submit" class="btn border-8 py-3 px-5 mt-3 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Зарегистрироваться</button>
 					<span>Уже зарегистрированы? <a href="#" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#SignModal" data-bs-dismiss="modal" aria-label="Close">Войти в личный кабинет</a></span>
 				</form>
 			</div>
 		</div>
 	</div>
 </aside>
-<aside class="modal fade" id="SignModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<!-- Модальное окно Входа -->
+<aside class="modal fade" id="SignModal" tabindex="-1" aria-labelledby="SignModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
 		<div class="modal-content">
 			<div class="modal-header border-0">
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body d-flex justify-content-center align-items-center">
-				<form class="d-flex flex-column align-items-center" style="max-width: 420px">
+				<form method="post" action="{% url 'self_storage:login' %}" class="d-flex flex-column align-items-center" style="max-width: 420px">
+					{% csrf_token %}
 					<h1 class="modal-title text-center fw-bold mb-3">Вход</h1>
-					<input type="email" required name="EMAIL" class="form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="E-mail">
-					<input type="password" required name="PASSWORD" class="form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Пароль">
+					<input type="text" required name="email" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="E-mail или логин">
+					<input type="password" required name="password" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Пароль">
 					<a href="#" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#ForgetModal" data-bs-dismiss="modal" aria-label="Close">Забыли пароль?</a>
-					<button class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Войти</button>
-					<span>Нет аккаунта?  <a href="#" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#RegModal" data-bs-dismiss="modal" aria-label="Close">Зарегистрируйтесь на сайте</a></span>
+					<button type="submit" class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Войти</button>
+					<span>Нет аккаунта? <a href="#" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#RegModal" data-bs-dismiss="modal" aria-label="Close">Зарегистрируйтесь на сайте</a></span>
 				</form>
 			</div>
 		</div>
 	</div>
 </aside>
-<aside class="modal fade" id="ForgetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<!-- Модальное окно Восстановления пароля -->
+<aside class="modal fade" id="ForgetModal" tabindex="-1" aria-labelledby="ForgetModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
 		<div class="modal-content">
 			<div class="modal-header border-0">
@@ -91,23 +116,39 @@
 			</div>
 			<div class="modal-body d-flex justify-content-center align-items-center">
 				<form class="d-flex flex-column align-items-center" style="max-width: 420px">
+					{% csrf_token %}
 					<h1 class="modal-title text-center fw-bold mb-3">Восстановление пароля</h1>
-					<input type="email" required name="EMAIL_FORGET" class="form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="E-mail">
-					<button class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Восстановить</button>
-					<span>Вспомнили пароль?  <a href="#" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#SignModal" data-bs-dismiss="modal" aria-label="Close">Отмена</a></span>
+					<input type="email" required name="EMAIL_FORGET" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="E-mail">
+					<button type="submit" class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Восстановить</button>
+					<span>Вспомнили пароль? <a href="#" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#SignModal" data-bs-dismiss="modal" aria-label="Close">Отмена</a></span>
 				</form>
 			</div>
 		</div>
 	</div>
 </aside>
+
 <main class="container mt-header">
+	{% if messages %}
+	<div class="row pt-4">
+		<div class="col-12">
+			{% for message in messages %}
+			<div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show border-8" role="alert">
+				{{ message }}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	{% endif %}
+
 	<article class="row">
 		<div class="col-12 col-lg-6 mb-3 mb-lg-0">
 			<h1 class="fw-bold SelfStorage_green mb-5">Доставка и бережное хранение ваших вещей</h1>
-			<h4 class="fw-lighter SelfStorage_grey mb-5">Аренда бокса на любой срок Бесплатная доставка от вашего дома </h4>
-			<form class="">
+			<h4 class="fw-lighter SelfStorage_grey mb-5">Аренда бокса на любой срок Бесплатная доставка от вашего дома</h4>
+			<form method="post" action="{% url 'self_storage:boxes' %}">
+				{% csrf_token %}
 				<input type="text" required name="EMAIL1" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Укажите ваш e-mail">
-				<button class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Рассчитать стоимость</button>
+				<button type="submit" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Рассчитать стоимость</button>
 				<span class="text-center fw-light">Нажимая на кнопку, вы подтверждаете свое <a href="#" class="link-dark">согласие на обработку персональных данных</a></span>
 			</form>
 		</div>
@@ -115,7 +156,7 @@
 	</article>
 
 	<article class="text-center row pt-header">
-		<h1 class=" fw-bold SelfStorage_green mb-5">Чем мы можем помочь?</h1>
+		<h1 class="fw-bold SelfStorage_green mb-5">Чем мы можем помочь?</h1>
 		<div class="col-12 col-sm-4 mb-4 mb-sm-0">
 			<svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="#579586" class="bi bi-alarm" viewBox="0 0 16 16">
 				<path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9V5.5z"/>
@@ -136,7 +177,7 @@
 				<path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
 			</svg>
 			<h4 class="fw-bold mt-4 mb-3 SelfStorage__bg_black">Дополнительный заработок</h4>
-			<h6>Использование небольших секций для  приобретенных  помещений</h6>
+			<h6>Использование небольших секций для приобретенных помещений</h6>
 		</div>
 	</article>
 
@@ -154,7 +195,7 @@
 				</div>
 
 				<h4 class="text-white mt-5 mb-3">Бокс от 190 р. за м²</h4>
-				<button class="btn fs_24 SelfStorage_green bg-white SelfStorage__btn_green border-8 w-50 py-3">Подробнее</button>
+				<a href="{% url 'self_storage:boxes' %}" class="btn fs_24 SelfStorage_green bg-white SelfStorage__btn_green border-8 w-50 py-3 text-decoration-none text-center">Подробнее</a>
 			</div>
 		</div>
 		<div class="col-12 col-lg-6 d-flex justify-content-center justify-content-lg-start">
@@ -168,7 +209,7 @@
 					<span class="text-white">Другие идеи хранения</span>
 				</div>
 				<h4 class="text-white mt-5 mb-3">Бокс от 210 р. за м²</h4>
-				<button class="btn fs_24 SelfStorage_orange bg-white SelfStorage__btn_orange border-8 w-50 py-3">Подробнее</button>
+				<a href="{% url 'self_storage:boxes' %}" class="btn fs_24 SelfStorage_orange bg-white SelfStorage__btn_orange border-8 w-50 py-3 text-decoration-none text-center">Подробнее</a>
 			</div>
 		</div>
 	</article>
@@ -179,12 +220,8 @@
 			<iframe class="w-100" height="700" src="https://www.youtube.com/embed/NsSC4pQ6HJE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 		</div>
 	</article>
+</main>
 
-	<article class="text-center row pt-header">
-		<h1 class="fw-bold SelfStorage_green mb-4">Удобная и доступная аренда боксов</h1>
-		<div class="col-12 col-sm-4 d-flex flex-column mb-4 mb-sm-0">
-			<div class="align-self-center d-flex justify-content-center align-items-center SelfStorage__bg_green rounded-pill" style="width: 84px; height: 84px;">
-				<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fff" class="bi bi-clipboard-check" viewBox="0 0 16 16">
-					<path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-					<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
-					<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

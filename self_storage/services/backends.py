@@ -10,6 +10,9 @@ class EmailOrUsernameModelBackend(ModelBackend):
         if username is None:
             username = kwargs.get(User.USERNAME_FIELD) or kwargs.get("email")
 
+        if not username or not password:
+            return None
+
         try:
             user = User.objects.get(
                 Q(username__iexact=username) | Q(email__iexact=username)
