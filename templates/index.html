@@ -74,7 +74,7 @@
 					<div class="form-check mb-3">
 						<input class="form-check-input" type="checkbox" name="agree" id="agreeReg" required checked>
 						<label class="form-check-label fw-light SelfStorage_grey" for="agreeReg">
-							Нажимая на кнопку, вы подтверждаете свое <a href="#" class="SelfStorage_grey">согласие на обработку персональных данных</a>
+							Нажимая на кнопку, вы подтверждаете свое <a href="{% static 'docs/pd_agreement.pdf' %}" class="SelfStorage_grey">согласие на обработку персональных данных</a>
 						</label>
 					</div>
 					<button type="submit" class="btn border-8 py-3 px-5 mt-3 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Зарегистрироваться</button>
@@ -149,7 +149,7 @@
 				{% csrf_token %}
 				<input type="text" required name="EMAIL1" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Укажите ваш e-mail">
 				<button type="submit" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Рассчитать стоимость</button>
-				<span class="text-center fw-light">Нажимая на кнопку, вы подтверждаете свое <a href="#" class="link-dark">согласие на обработку персональных данных</a></span>
+				<span class="text-center fw-light">Нажимая на кнопку, вы подтверждаете свое <a href="{% static 'docs/pd_agreement.pdf' %}" class="link-dark">согласие на обработку персональных данных</a></span>
 			</form>
 		</div>
 		<div class="col-12 col-lg-6 SelfStorage__img"></div>
