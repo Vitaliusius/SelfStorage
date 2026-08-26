@@ -56,19 +56,31 @@ def logout_view(request):
 
 @login_required(login_url="self_storage:index")
 def my_rent(request):
+    user = request.user
+
+    if request.method == "POST":
+        if "first_name" in request.POST:
+            user.first_name = request.POST.get("first_name", "").strip()
+        if "phone" in request.POST:
+            user.phone = request.POST.get("phone", "").strip()
+        if "avatar" in request.FILES:
+            user.avatar = request.FILES["avatar"]
+
+        user.save()
+        messages.success(request, "Данные профиля успешно обновлены!")
+        return redirect("self_storage:my_rent")
     user_orders = (
-        request.user.orders.select_related("box", "box__warehouse")
+        user.orders.select_related("box", "box__warehouse")
         .order_by("-created_at")
     )
 
-    if not user_orders.exists():
-        return render(request, "my-rent-empty.html", {"user": request.user})
+    template_name = "my-rent.html" if user_orders.exists() else "my-rent-empty.html"
 
     return render(
         request,
-        "my-rent.html",
+        template_name,
         {
-            "user": request.user,
+            "user": user,
             "orders": user_orders,
         },
     )
