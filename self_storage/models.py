@@ -1,16 +1,28 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
+from django.core.validators import RegexValidator
 from django.db import models
 
 
+phone_regex_validator = RegexValidator(
+    regex=r"^\+?[0-9\s\-\(\)]{10,20}$",
+    message="Введите корректный номер телефона (например: +7 999 123-45-67 или 89991234567).",
+)
+
+
 class User(AbstractUser):
-    phone = models.CharField("Телефон", max_length=20, blank=True)
-    email = models.EmailField("Email", unique=True)
+    phone = models.CharField(
+        "Телефон",
+        max_length=20,
+        blank=True,
+        validators=[phone_regex_validator],
+    )
+    email = models.EmailField("E-mail", unique=True)
     avatar = models.ImageField(
         "Аватар",
         upload_to="avatars/",
+        blank=True,
         null=True,
-        blank=True
     )
 
     class Meta:

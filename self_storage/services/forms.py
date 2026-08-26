@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
 from django.core.exceptions import ValidationError
+from .backends import normalize_phone
 
 User = get_user_model()
 
@@ -43,6 +44,14 @@ class RegisterForm(forms.ModelForm):
                 "Пользователь с таким email уже зарегистрирован."
             )
         return email
+
+
+    def clean_phone(self):
+        raw_phone = self.cleaned_data.get("phone", "").strip()
+        if raw_phone:
+            return normalize_phone(raw_phone)
+        return ""
+
 
     def save(self, commit=True):
         user = super().save(commit=False)

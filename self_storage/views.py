@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from .services.forms import LoginForm, RegisterForm
+from .services.backends import normalize_phone
 
 
 def index(request):
@@ -62,10 +63,18 @@ def my_rent(request):
         if "first_name" in request.POST:
             user.first_name = request.POST.get("first_name", "").strip()
         if "phone" in request.POST:
-            user.phone = request.POST.get("phone", "").strip()
+            raw_phone = request.POST.get("phone", "").strip()
+            if raw_phone:
+                try:
+                    user.phone = normalize_phone(raw_phone)
+                except ValidationError as e:
+                    messages.error(request, e.message)
+                    return redirect("self_storage:my_rent")
+            else:
+                user.phone = ""
+
         if "avatar" in request.FILES:
             user.avatar = request.FILES["avatar"]
-
         user.save()
         messages.success(request, "Данные профиля успешно обновлены!")
         return redirect("self_storage:my_rent")
@@ -73,7 +82,6 @@ def my_rent(request):
         user.orders.select_related("box", "box__warehouse")
         .order_by("-created_at")
     )
-
     template_name = "my-rent.html" if user_orders.exists() else "my-rent-empty.html"
 
     return render(
