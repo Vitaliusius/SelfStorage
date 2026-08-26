@@ -179,10 +179,19 @@ class Lead(models.Model):
     phone = models.CharField(
         "Телефон",
         max_length=20,
-        blank=True
+        blank=True,
+        validators=[phone_regex_validator],
     )
     created_at = models.DateTimeField("Дата заявки", auto_now_add=True)
     is_processed = models.BooleanField("Обработано", default=False)
+
+    def save(self, *args, **kwargs):
+        if self.phone:
+            try:
+                self.phone = normalize_phone(self.phone)
+            except Exception:
+                pass
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Заявка"
