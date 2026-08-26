@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import Box, Lead, Order, User, Warehouse
+from django.utils.html import format_html
 
 
 @admin.register(User)
@@ -81,6 +82,16 @@ class OrderAdmin(admin.ModelAdmin):
     )
     readonly_fields = ("created_at", "qr_code_preview")
     list_editable = ("status",)
+
+    def qr_code_preview(self, obj):
+        if obj.qr_code:
+            return format_html(
+                '<img src="{}" style="max-height: 120px; border-radius: 6px;" />',
+                obj.qr_code.url,
+            )
+        return "QR-код не сформирован"
+
+    qr_code_preview.short_description = "Превью QR-кода"
 
 
 @admin.register(Lead)
