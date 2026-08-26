@@ -162,6 +162,11 @@ class Order(models.Model):
         blank=True
     )
     created_at = models.DateTimeField("Создан", auto_now_add=True)
+    is_rental_request = models.BooleanField(
+        "Заявка на аренду (не подтверждена)",
+        default=True,
+        help_text="True — заявка, False — подтверждённая аренда"
+    )
 
     class Meta:
         verbose_name = "Заказ аренды"

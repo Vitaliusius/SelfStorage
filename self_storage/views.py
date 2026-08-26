@@ -5,17 +5,76 @@ from django.shortcuts import redirect, render
 from .services.forms import LoginForm, RegisterForm
 from .services.backends import normalize_phone
 
+from django.utils import timezone
+from datetime import timedelta
+from django.core.exceptions import ValidationError
+from .models import Box, Order
+
 
 def index(request):
     return render(request, "index.html")
 
 
 def boxes(request):
-    return render(request, "boxes.html")
+    all_boxes = Box.objects.filter(status='free')
+
+    boxes_to3 = all_boxes.filter(area__lte=3)
+    boxes_to10 = all_boxes.filter(area__gt=3, area__lte=10)
+    boxes_from10 = all_boxes.filter(area__gt=10)
+
+    return render(request, "boxes.html", {
+        "boxes": all_boxes,
+        "boxes_to3": boxes_to3,
+        "boxes_to10": boxes_to10,
+        "boxes_from10": boxes_from10,
+    })
 
 
 def faq(request):
     return render(request, "faq.html")
+
+
+@login_required(login_url="self_storage:index")
+def rental_request(request):
+    if request.method == 'POST':
+        box_id = request.POST.get('box_id', '').strip()
+        
+        if not box_id:
+            messages.error(request, 'Пожалуйста, выберите бокс.')
+            return redirect(request.META.get("HTTP_REFERER", "self_storage:boxes"))
+        
+        try:
+            box = Box.objects.get(id=box_id)
+        except Box.DoesNotExist:
+            messages.error(request, 'Выбранный бокс не найден.')
+            return redirect(request.META.get("HTTP_REFERER", "self_storage:boxes"))
+
+        existing_request = Order.objects.filter(
+            user=request.user,
+            box=box,
+            is_rental_request=True
+        ).exists()
+        
+        if existing_request:
+            messages.warning(request, f'Вы уже отправили заявку на бокс №{box.number}. Ожидайте звонка менеджера.')
+            return redirect(request.META.get("HTTP_REFERER", "self_storage:boxes"))
+
+        start_date = timezone.now().date()
+        end_date = start_date + timedelta(days=30)
+        
+        Order.objects.create(
+            user=request.user,
+            box=box,
+            start_date=start_date,
+            end_date=end_date,
+            status='active',
+            is_rental_request=True,
+        )
+        
+        messages.success(request, f'Заявка на бокс №{box.number} отправлена! Менеджер свяжется с вами для подтверждения.')
+        return redirect(request.META.get("HTTP_REFERER", "self_storage:boxes"))
+    
+    return redirect("self_storage:boxes")
 
 
 def login_view(request):
