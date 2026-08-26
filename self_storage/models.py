@@ -6,6 +6,12 @@ from django.db import models
 class User(AbstractUser):
     phone = models.CharField("Телефон", max_length=20, blank=True)
     email = models.EmailField("Email", unique=True)
+    avatar = models.ImageField(
+        "Аватар",
+        upload_to="avatars/",
+        null=True,
+        blank=True
+    )
 
     class Meta:
         verbose_name = "Пользователь"

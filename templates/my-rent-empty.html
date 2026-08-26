@@ -65,13 +65,10 @@
 
 		<div class="col-lg-9">
 			<div class="card tab-content p-5">
-				<!-- Вкладка данных профиля -->
 				<div class="tab-pane fade show active" id="LK" role="tabpanel" aria-labelledby="LK-tab">
 					<div class="row">
 						<div class="col-12 col-sm-5 d-flex flex-column align-items-center">
-							<div class="d-flex justify-content-center align-items-center rounded-pill SelfStorage__bg_green text-white mb-3" style="width: 140px; height: 140px; font-size: 48px;">
-								{{ user.first_name|default:user.email|make_list|first|upper }}
-							</div>
+								<img src="{% static 'img/placeholder.png' %}" class="rounded-pill mb-3 shadow-sm" alt="Аватар" style="width: 140px; height: 140px; object-fit: cover;">
 							<h4>{{ user.first_name|default:user.username }}</h4>
 						</div>
 						<div class="col-12 col-sm-7 d-flex flex-column">
@@ -92,7 +89,6 @@
 					</div>
 				</div>
 
-				<!-- Вкладка пустой аренды -->
 				<div class="tab-pane fade" id="Rent" role="tabpanel" aria-labelledby="Rent-tab">
 					<h1 class="fw-bold SelfStorage_green mb-4">Добрый день, {{ user.first_name|default:user.email }}!</h1>
 					<h4 class="SelfStorage_grey my-3">У вас пока нет активных боксов в аренде.</h4>
