@@ -26,26 +26,28 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.ModelForm):
+    first_name = forms.CharField(label="Имя", max_length=150, required=True)
     password = forms.CharField(
-        label="Пароль",
-        widget=forms.PasswordInput,
-        required=True,
+        label="Пароль", widget=forms.PasswordInput, required=True
     )
     agree = forms.BooleanField(required=True)
 
     class Meta:
         model = User
-        fields = ("email", "phone", "password")
+        fields = ("first_name", "email", "phone", "password")
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
         if User.objects.filter(email__iexact=email).exists():
-            raise ValidationError("Пользователь с таким email уже зарегистрирован.")
+            raise ValidationError(
+                "Пользователь с таким email уже зарегистрирован."
+            )
         return email
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.username = self.cleaned_data["email"]
+        user.first_name = self.cleaned_data.get("first_name", "")
         user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()

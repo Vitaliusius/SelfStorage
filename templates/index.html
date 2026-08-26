@@ -57,7 +57,7 @@
 	</nav>
 </header>
 
-<!-- Модальное окно Регистрации -->
+
 <aside class="modal fade" id="RegModal" tabindex="-1" aria-labelledby="RegModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
 		<div class="modal-content">
@@ -68,6 +68,7 @@
 				<form method="post" action="{% url 'self_storage:register' %}" class="d-flex flex-column align-items-center" style="max-width: 420px">
 					{% csrf_token %}
 					<h1 class="modal-title text-center fw-bold mb-3">Регистрация</h1>
+					<input type="text" required name="first_name" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Имя">
 					<input type="email" required name="email" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="E-mail">
 					<input type="tel" name="phone" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Телефон">
 					<input type="password" required name="password" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Пароль">
@@ -85,7 +86,7 @@
 	</div>
 </aside>
 
-<!-- Модальное окно Входа -->
+
 <aside class="modal fade" id="SignModal" tabindex="-1" aria-labelledby="SignModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
 		<div class="modal-content">
@@ -107,7 +108,7 @@
 	</div>
 </aside>
 
-<!-- Модальное окно Восстановления пароля -->
+
 <aside class="modal fade" id="ForgetModal" tabindex="-1" aria-labelledby="ForgetModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
 		<div class="modal-content">
