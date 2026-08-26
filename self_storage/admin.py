@@ -61,6 +61,7 @@ class OrderAdmin(admin.ModelAdmin):
         "box",
         "start_date",
         "end_date",
+        "access_code",
         "status",
         "need_delivery",
         "created_at",
@@ -78,7 +79,7 @@ class OrderAdmin(admin.ModelAdmin):
         "box__number",
         "client_address",
     )
-    readonly_fields = ("created_at",)
+    readonly_fields = ("created_at", "qr_code_preview")
     list_editable = ("status",)
 
 
