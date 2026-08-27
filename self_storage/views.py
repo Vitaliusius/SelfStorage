@@ -16,6 +16,7 @@ def index(request):
 
 
 def boxes(request):
+    warehouses = Warehouse.objects.all()
     all_boxes = Box.objects.filter(status='free')
     warehouse_filter = request.GET.get('warehouse', '')
 
@@ -42,6 +43,7 @@ def boxes(request):
         "boxes_to10": boxes_to10,
         "boxes_from10": boxes_from10,
         "selected_warehouse": warehouse_filter,
+        "warehouses": warehouses,
     })
 
 

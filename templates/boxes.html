@@ -279,7 +279,7 @@
 	<article class="pt-header" id="BOX">
 		<div class="tab-content" id="boxes-content">
 			<!-- Москва -->
-			<div class="tab-pane fade show active" id="pills-Moscow" role="tabpanel" aria-labelledby="pills-Moscow-tab">
+			<div class="tab-pane fade {% if selected_warehouse == 'moscow' or not selected_warehouse %}show active{% endif %}" id="pills-Moscow" role="tabpanel" aria-labelledby="pills-Moscow-tab">
 				<h1 class="text-center mb-4 fw-bold">Москва, ул. Рокотова, д. 15</h1>
 				<div class="row d-flex flex-column mb-5">
 					<div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-between align-self-center">
@@ -327,18 +327,22 @@
 					<div class="col-12 col-lg-6">
 						<div class="row">
 							<p class="text-center text-lg-start SelfStorage_grey">Доступ по QR</p>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">17 °С</span>
-								<span class="SelfStorage_grey mb-3">Температура на складе</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">14 из 390</span>
-								<span class="SelfStorage_grey mb-3">Боксов свободно</span>
-							</div>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">до 3.5 м</span>
-								<span class="SelfStorage_grey mb-3">Высота потолка</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">от 3034 ₽</span>
-								<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
-							</div>
+							{% for warehouse in warehouses %}
+                    			{% if warehouse.city == 'Москва' %}
+									<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+										<span class="fs_30 fw-bold SelfStorage_orange">{{ warehouse.temperature }}</span>
+										<span class="SelfStorage_grey mb-3">Температура на складе</span>
+										<span class="fs_30 fw-bold SelfStorage_orange">{{ warehouse.boxes.count }} из 390</span>
+										<span class="SelfStorage_grey mb-3">Боксов свободно</span>
+									</div>
+									<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+										<span class="fs_30 fw-bold SelfStorage_orange">до {{ warehouse.ceiling_height }} м</span>
+										<span class="SelfStorage_grey mb-3">Высота потолка</span>
+										<span class="fs_30 fw-bold SelfStorage_orange">от 3034 ₽</span>
+										<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
+									</div>
+								{% endif %}
+                			{% endfor %}
 							<div class="d-flex flex-column align-items-center align-items-lg-start">
 								<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3 text-decoration-none text-center">Арендовать бокс</a>
 								<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
@@ -350,7 +354,7 @@
 			</div>
 
 			<!-- Одинцово -->
-			<div class="tab-pane fade" id="pills-Odintsovo" role="tabpanel" aria-labelledby="pills-Odintsovo-tab">
+			<div class="tab-pane fade {% if selected_warehouse == 'odintsovo' %}show active{% endif %}" id="pills-Odintsovo" role="tabpanel" aria-labelledby="pills-Odintsovo-tab">
 				<h1 class="text-center mb-4 fw-bold">Одинцово, ул. Северная, д. 36</h1>
 				<div class="row d-flex flex-column mb-5">
 					<div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-between align-self-center">
@@ -398,30 +402,34 @@
 					<div class="col-12 col-lg-6">
 						<div class="row">
 							<p class="text-center text-lg-start SelfStorage_grey">Доступ по QR</p>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">18 °С</span>
-								<span class="SelfStorage_grey mb-3">Температура на складе</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">160 из 258</span>
-								<span class="SelfStorage_grey mb-3">Боксов свободно</span>
-							</div>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">до 3.5 м</span>
-								<span class="SelfStorage_grey mb-3">Высота потолка</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">от 2264 ₽</span>
-								<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
-							</div>
-							<div class="d-flex flex-column align-items-center align-items-lg-start">
-								<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3 text-decoration-none text-center">Арендовать бокс</a>
-								<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
-							</div>
-							<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
+							{% for warehouse in warehouses %}
+                				{% if warehouse.city == 'Одинцово' %}
+									<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+										<span class="fs_30 fw-bold SelfStorage_orange">{{ warehouse.temperature }}</span>
+										<span class="SelfStorage_grey mb-3">Температура на складе</span>
+										<span class="fs_30 fw-bold SelfStorage_orange">{{ warehouse.boxes.count }} из 258</span>
+										<span class="SelfStorage_grey mb-3">Боксов свободно</span>
+									</div>
+									<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+										<span class="fs_30 fw-bold SelfStorage_orange">до {{ warehouse.ceiling_height }} м</span>
+										<span class="SelfStorage_grey mb-3">Высота потолка</span>
+										<span class="fs_30 fw-bold SelfStorage_orange">от 2264 ₽</span>
+										<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
+									</div>
+									<div class="d-flex flex-column align-items-center align-items-lg-start">
+										<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3 text-decoration-none text-center">Арендовать бокс</a>
+										<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
+									</div>
+									<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
+								{% endif %}
+            				{% endfor %}
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<!-- Пушкино -->
-			<div class="tab-pane fade" id="pills-Pushkino" role="tabpanel" aria-labelledby="pills-Pushkino-tab">
+			<div class="tab-pane fade {% if selected_warehouse == 'pushkino' %}show active{% endif %}" id="pills-Pushkino" role="tabpanel" aria-labelledby="pills-Pushkino-tab">
 				<h1 class="text-center mb-4 fw-bold">Пушкино, ул. Строителей, д. 5</h1>
 				<div class="row d-flex flex-column mb-5">
 					<div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-between align-self-center">
@@ -469,30 +477,34 @@
 					<div class="col-12 col-lg-6">
 						<div class="row">
 							<p class="text-center text-lg-start SelfStorage_grey">Доступ по QR</p>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">20 °С</span>
-								<span class="SelfStorage_grey mb-3">Температура на складе</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">58 из 361</span>
-								<span class="SelfStorage_grey mb-3">Боксов свободно</span>
-							</div>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">до 5.5 м</span>
-								<span class="SelfStorage_grey mb-3">Высота потолка</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">от 2154 ₽</span>
-								<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
-							</div>
-							<div class="d-flex flex-column align-items-center align-items-lg-start">
-								<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3 text-decoration-none text-center">Арендовать бокс</a>
-								<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
-							</div>
-							<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
+							{% for warehouse in warehouses %}
+    							{% if warehouse.city == 'Пушкино' %}
+									<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+										<span class="fs_30 fw-bold SelfStorage_orange">{{ warehouse.temperature }}</span>
+										<span class="SelfStorage_grey mb-3">Температура на складе</span>
+										<span class="fs_30 fw-bold SelfStorage_orange">{{ warehouse.boxes.count }} из 361</span>
+										<span class="SelfStorage_grey mb-3">Боксов свободно</span>
+									</div>
+									<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+										<span class="fs_30 fw-bold SelfStorage_orange">до {{ warehouse.ceiling_height }}</span>
+										<span class="SelfStorage_grey mb-3">Высота потолка</span>
+										<span class="fs_30 fw-bold SelfStorage_orange">от 2154 ₽</span>
+										<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
+									</div>
+									<div class="d-flex flex-column align-items-center align-items-lg-start">
+										<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3 text-decoration-none text-center">Арендовать бокс</a>
+										<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
+									</div>
+									<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
+								{% endif %}
+            				{% endfor %}
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<!-- Люберцы -->
-			<div class="tab-pane fade" id="pills-Lubertsi" role="tabpanel" aria-labelledby="pills-Lubertsi-tab">
+			<div class="tab-pane fade {% if selected_warehouse == 'lubertsi' %}show active{% endif %}" id="pills-Lubertsi" role="tabpanel" aria-labelledby="pills-Lubertsi-tab">
 				<h1 class="text-center mb-4 fw-bold">Люберцы, ул. Советская, д. 88</h1>
 				<div class="row d-flex flex-column mb-5">
 					<div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-between align-self-center">
@@ -540,30 +552,34 @@
 					<div class="col-12 col-lg-6">
 						<div class="row">
 							<p class="text-center text-lg-start SelfStorage_grey">Доступ по QR</p>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">18 °С</span>
-								<span class="SelfStorage_grey mb-3">Температура на складе</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">4 из 130</span>
-								<span class="SelfStorage_grey mb-3">Боксов свободно</span>
-							</div>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">до 3.5 м</span>
-								<span class="SelfStorage_grey mb-3">Высота потолка</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">от 1408 ₽</span>
-								<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
-							</div>
-							<div class="d-flex flex-column align-items-center align-items-lg-start">
-								<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3 text-decoration-none text-center">Арендовать бокс</a>
-								<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
-							</div>
-							<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
+							{% for warehouse in warehouses %}
+    							{% if warehouse.city == 'Люберцы' %}
+									<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+										<span class="fs_30 fw-bold SelfStorage_orange">{{ warehouse.temperature }}</span>
+										<span class="SelfStorage_grey mb-3">Температура на складе</span>
+										<span class="fs_30 fw-bold SelfStorage_orange">{{ warehouse.boxes.count }} из 130</span>
+										<span class="SelfStorage_grey mb-3">Боксов свободно</span>
+									</div>
+									<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+										<span class="fs_30 fw-bold SelfStorage_orange">до {{ warehouse.ceiling_height }} м</span>
+										<span class="SelfStorage_grey mb-3">Высота потолка</span>
+										<span class="fs_30 fw-bold SelfStorage_orange">от 1408 ₽</span>
+										<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
+									</div>
+									<div class="d-flex flex-column align-items-center align-items-lg-start">
+										<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3 text-decoration-none text-center">Арендовать бокс</a>
+										<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
+									</div>
+									<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
+								{% endif %}
+            				{% endfor %}
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<!-- Домодедово -->
-			<div class="tab-pane fade" id="pills-Domodedovo" role="tabpanel" aria-labelledby="pills-Domodedovo-tab">
+			<div class="tab-pane fade {% if selected_warehouse == 'domodedovo' %}show active{% endif %}" id="pills-Domodedovo" role="tabpanel" aria-labelledby="pills-Domodedovo-tab">
 				<h1 class="text-center mb-4 fw-bold">Домодедово, ул. Орджоникидзе, д. 29</h1>
 				<div class="row d-flex flex-column mb-5">
 					<div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-between align-self-center">
@@ -611,23 +627,27 @@
 					<div class="col-12 col-lg-6">
 						<div class="row">
 							<p class="text-center text-lg-start SelfStorage_grey">Доступ по QR</p>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">21 °С</span>
-								<span class="SelfStorage_grey mb-3">Температура на складе</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">56 из 234</span>
-								<span class="SelfStorage_grey mb-3">Боксов свободно</span>
-							</div>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">до 4.5 м</span>
-								<span class="SelfStorage_grey mb-3">Высота потолка</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">от 2988 ₽</span>
-								<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
-							</div>
-							<div class="d-flex flex-column align-items-center align-items-lg-start">
-								<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3 text-decoration-none text-center">Арендовать бокс</a>
-								<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
-							</div>
-							<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
+							{% for warehouse in warehouses %}
+    							{% if warehouse.city == 'Домодедово' %}
+									<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+										<span class="fs_30 fw-bold SelfStorage_orange">{{ warehouse.temperature }}</span>
+										<span class="SelfStorage_grey mb-3">Температура на складе</span>
+										<span class="fs_30 fw-bold SelfStorage_orange">{{ warehouse.boxes.count }} из 234</span>
+										<span class="SelfStorage_grey mb-3">Боксов свободно</span>
+									</div>
+									<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+										<span class="fs_30 fw-bold SelfStorage_orange">до {{ warehouse.ceiling_height }} м</span>
+										<span class="SelfStorage_grey mb-3">Высота потолка</span>
+										<span class="fs_30 fw-bold SelfStorage_orange">от 2988 ₽</span>
+										<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
+									</div>
+									<div class="d-flex flex-column align-items-center align-items-lg-start">
+										<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3 text-decoration-none text-center">Арендовать бокс</a>
+										<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
+									</div>
+									<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
+								{% endif %}
+            				{% endfor %}
 						</div>
 					</div>
 				</div>
