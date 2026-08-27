@@ -8,7 +8,7 @@ from .services.backends import normalize_phone
 from django.utils import timezone
 from datetime import timedelta
 from django.core.exceptions import ValidationError
-from .models import Box, Order
+from .models import Box, Order, Warehouse
 
 
 def index(request):
@@ -17,16 +17,31 @@ def index(request):
 
 def boxes(request):
     all_boxes = Box.objects.filter(status='free')
+    warehouse_filter = request.GET.get('warehouse', '')
 
     boxes_to3 = all_boxes.filter(area__lte=3)
     boxes_to10 = all_boxes.filter(area__gt=3, area__lte=10)
     boxes_from10 = all_boxes.filter(area__gt=10)
 
+    if warehouse_filter == 'moscow':
+        boxes = all_boxes.filter(warehouse__city='Москва')
+    elif warehouse_filter == 'odintsovo':
+        boxes = all_boxes.filter(warehouse__city='Одинцово')
+    elif warehouse_filter == 'pushkino':
+        boxes = all_boxes.filter(warehouse__city='Пушкино')
+    elif warehouse_filter == 'lubertsi':
+        boxes = all_boxes.filter(warehouse__city='Люберцы')
+    elif warehouse_filter == 'domodedovo':
+        boxes = all_boxes.filter(warehouse__city='Домодедово')
+    else:
+        boxes = all_boxes
+
     return render(request, "boxes.html", {
-        "boxes": all_boxes,
+        "boxes": boxes,
         "boxes_to3": boxes_to3,
         "boxes_to10": boxes_to10,
         "boxes_from10": boxes_from10,
+        "selected_warehouse": warehouse_filter,
     })
 
 

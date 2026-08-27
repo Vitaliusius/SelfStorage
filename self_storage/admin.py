@@ -64,11 +64,13 @@ class OrderAdmin(admin.ModelAdmin):
         "end_date",
         "access_code",
         "status",
+        "is_rental_request",
         "need_delivery",
         "created_at",
     )
     list_filter = (
         "status",
+        "is_rental_request",
         "need_delivery",
         "start_date",
         "end_date",

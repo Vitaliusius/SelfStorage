@@ -162,7 +162,7 @@
 		<a href="#BOX" id="toBox" class="d-none"></a>
 		<ul class="nav nav-pills mb-3 d-flex justify-content-between" id="boxes-links" role="tablist">
 			<li class="nav-item flex-grow-1 mx-2" role="presentation">
-				<a href="#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink active" id="pills-Moscow-tab" data-bs-toggle="pill" data-bs-target="#pills-Moscow" role="tab" aria-controls="pills-Moscow" aria-selected="true">
+				<a href="?warehouse=moscow#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink {% if selected_warehouse == 'moscow' %}active{% endif %}" role="tab">
 					<div class="col-12 col-lg-3 d-flex justify-content-center">
 						<img src="{% static 'img/image11.png' %}" alt="" class="mb-3 mb-lg-0">
 					</div>
@@ -181,7 +181,7 @@
 				</a>
 			</li>
 			<li class="nav-item flex-grow-1 mx-2" role="presentation">
-				<a href="#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink" id="pills-Odintsovo-tab" data-bs-toggle="pill" data-bs-target="#pills-Odintsovo" role="tab" aria-controls="pills-Odintsovo" aria-selected="false">
+				<a href="?warehouse=odintsovo#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink {% if selected_warehouse == 'odintsovo' %}active{% endif %}" role="tab">
 					<div class="col-12 col-lg-3 d-flex justify-content-center">
 						<img src="{% static 'img/image9.png' %}" alt="" class="mb-3 mb-lg-0">
 					</div>
@@ -200,7 +200,7 @@
 				</a>
 			</li>
 			<li class="nav-item flex-grow-1 mx-2" role="presentation">
-				<a href="#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink" id="pills-Pushkino-tab" data-bs-toggle="pill" data-bs-target="#pills-Pushkino" role="tab" aria-controls="pills-Pushkino" aria-selected="false">
+				<a href="?warehouse=pushkino#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink {% if selected_warehouse == 'pushkino' %}active{% endif %}" role="tab">
 					<div class="col-12 col-lg-3 d-flex justify-content-center">
 						<img src="{% static 'img/image15.png' %}" alt="" class="mb-3 mb-lg-0">
 					</div>
@@ -219,7 +219,7 @@
 				</a>
 			</li>
 			<li class="nav-item flex-grow-1 mx-2" role="presentation">
-				<a href="#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink" id="pills-Lubertsi-tab" data-bs-toggle="pill" data-bs-target="#pills-Lubertsi" role="tab" aria-controls="pills-Lubertsi" aria-selected="false">
+				<a href="?warehouse=lubertsi#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink {% if selected_warehouse == 'lubertsi' %}active{% endif %}" role="tab">
 					<div class="col-12 col-lg-3 d-flex justify-content-center">
 						<img src="{% static 'img/image151.png' %}" alt="" class="mb-3 mb-lg-0">
 					</div>
@@ -238,7 +238,7 @@
 				</a>
 			</li>
 			<li class="nav-item flex-grow-1 mx-2" role="presentation">
-				<a href="#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink" id="pills-Domodedovo-tab" data-bs-toggle="pill" data-bs-target="#pills-Domodedovo" role="tab" aria-controls="pills-Domodedovo" aria-selected="false">
+				<a href="?warehouse=domodedovo#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink {% if selected_warehouse == 'domodedovo' %}active{% endif %}" role="tab">
 					<div class="col-12 col-lg-3 d-flex justify-content-center">
 						<img src="{% static 'img/image16.png' %}" alt="" class="mb-3 mb-lg-0">
 					</div>
@@ -651,26 +651,27 @@
 
 		<div class="tab-content" id="pills-tabContent">
 			<div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
-				{% for box in boxes %}
-				<form method="post" action="{% url 'self_storage:rental' %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
-					{% csrf_token %}
-					<input type="hidden" name="box_id" value="{{ box.id }}">
-					<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-						<span class="SelfStorage_green fs_24 me-2">{{ box.floor }} эт.</span><span class="fs_24">№{{ box.number }}</span>
-					</div>
-					<div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-						<span class="fs_24">{{ box.area }} м²</span>
-					</div>
-					<div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-						<span class="fs_24">{{ box.dimensions }}</span>
-					</div>
-					<div class="col-12 col-lg-3">
-						<button type="submit" class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</button>
-					</div>
-				</form>
-				{% empty %}
-    			<p class="text-center SelfStorage_grey fs_24">На данный момент свободных боксов нет.</p>
-				{% endfor %}
+				<div id="boxes-container">
+					{% for box in boxes %}
+					<form method="post" action="{% url 'self_storage:rental' %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+						{% csrf_token %}
+						<input type="hidden" name="box_id" value="{{ box.id }}">
+						<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
+							<span class="SelfStorage_green fs_24 me-2">{{ box.floor }} эт.</span><span class="fs_24">№{{ box.number }}</span>
+						</div>
+						<div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
+							<span class="fs_24">{{ box.area }} м²</span>
+						</div>
+						<div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
+							<span class="fs_24">{{ box.dimensions }}</span>
+						</div>
+						<div class="col-12 col-lg-3">
+							<button type="submit" class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</button>
+						</div>
+					</form>
+					{% empty %}
+    				<p class="text-center SelfStorage_grey fs_24">На данный момент свободных боксов нет.</p>
+					{% endfor %}
 				</div>
 			</div>
 
