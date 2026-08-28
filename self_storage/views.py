@@ -8,14 +8,51 @@ from .services.backends import normalize_phone
 from django.utils import timezone
 from datetime import timedelta
 from django.core.exceptions import ValidationError
-from .models import Box, Order, Warehouse
+from .models import Box, Order, Warehouse, Lead
 
 
 def index(request):
+    if request.method == "POST":
+        email = (request.POST.get("EMAIL1") or request.POST.get("EMAIL2") or "").strip()
+        phone = (request.POST.get("PHONE1") or request.POST.get("PHONE2") or "").strip()
+
+        if not email and not phone:
+            messages.error(request, "Пожалуйста, укажите email или номер телефона.")
+            return redirect("self_storage:index")
+
+        try:
+            Lead.objects.create(
+                email=email,
+                phone=phone
+            )
+            messages.success(request, "Спасибо! Заявка принята, мы свяжемся с вами в ближайшее время.")
+        except Exception:
+            messages.error(request, "Произошла ошибка при отправке заявки. Попробуйте еще раз.")
+
+        return redirect("self_storage:index")
+
     return render(request, "index.html")
 
 
 def boxes(request):
+    if request.method == "POST":
+        email = request.POST.get("EMAIL1", "").strip()
+        phone = request.POST.get("PHONE", "").strip()
+
+        if not email and not phone:
+            messages.error(request, "Пожалуйста, укажите email или номер телефона.")
+            return redirect("self_storage:boxes")
+
+        try:
+            Lead.objects.create(
+                email=email,
+                phone=phone
+            )
+            messages.success(request, "Спасибо! Заявка принята, мы свяжемся с вами в ближайшее время.")
+        except Exception as e:
+            messages.error(request, "Произошла ошибка при отправке заявки. Попробуйте еще раз.")
+
+        return redirect("self_storage:boxes")
     warehouses = Warehouse.objects.all()
     all_boxes = Box.objects.filter(status='free')
     warehouse_filter = request.GET.get('warehouse', '')
