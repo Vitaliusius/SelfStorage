@@ -53,26 +53,34 @@ def boxes(request):
             messages.error(request, "Произошла ошибка при отправке заявки. Попробуйте еще раз.")
 
         return redirect("self_storage:boxes")
+
     warehouses = Warehouse.objects.all()
     all_boxes = Box.objects.filter(status='free')
     warehouse_filter = request.GET.get('warehouse', '')
 
-    boxes_to3 = all_boxes.filter(area__lte=3)
-    boxes_to10 = all_boxes.filter(area__gt=3, area__lte=10)
-    boxes_from10 = all_boxes.filter(area__gt=10)
+    city_map = {
+        'москва': 'Москва',
+        'одинцово': 'Одинцово',
+        'пушкино': 'Пушкино',
+        'люберцы': 'Люберцы',
+        'домодедово': 'Домодедово',
+        'moscow': 'Москва',
+        'moskva': 'Москва',
+        'odintsovo': 'Одинцово',
+        'pushkino': 'Пушкино',
+        'lubertsi': 'Люберцы',
+        'domodedovo': 'Домодедово',
+    }
 
-    if warehouse_filter == 'moscow':
-        boxes = all_boxes.filter(warehouse__city='Москва')
-    elif warehouse_filter == 'odintsovo':
-        boxes = all_boxes.filter(warehouse__city='Одинцово')
-    elif warehouse_filter == 'pushkino':
-        boxes = all_boxes.filter(warehouse__city='Пушкино')
-    elif warehouse_filter == 'lubertsi':
-        boxes = all_boxes.filter(warehouse__city='Люберцы')
-    elif warehouse_filter == 'domodedovo':
-        boxes = all_boxes.filter(warehouse__city='Домодедово')
+    city = city_map.get(warehouse_filter)
+    if city:
+        boxes = all_boxes.filter(warehouse__city=city)
     else:
         boxes = all_boxes
+
+    boxes_to3 = boxes.filter(area__lte=3)
+    boxes_to10 = boxes.filter(area__gt=3, area__lte=10)
+    boxes_from10 = boxes.filter(area__gt=10)
 
     return render(request, "boxes.html", {
         "boxes": boxes,
