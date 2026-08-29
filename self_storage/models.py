@@ -1,12 +1,18 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.core.validators import RegexValidator
+from django.urls import reverse
 from django.db import models
 
 
 phone_regex_validator = RegexValidator(
     regex=r"^\+?[0-9\s\-\(\)]{10,20}$",
     message="Введите корректный номер телефона (например: +7 999 123-45-67 или 89991234567).",
+)
+
+slug_validator = RegexValidator(
+    regex=r'^[a-zA-Z0-9_-]+$',
+    message="Короткий код может содержать только латинские буквы, цифры, дефис и нижнее подчеркивание."
 )
 
 
@@ -204,3 +210,23 @@ class Lead(models.Model):
 
     def __str__(self):
         return f"Заявка #{self.id}: {self.email or self.phone}"
+
+
+class ShortLink(models.Model):
+    original_url = models.URLField(verbose_name="Оригинальная ссылка", max_length=500)
+    short_code = models.CharField(
+        verbose_name="Короткий код", 
+        max_length=50, 
+        unique=True,
+        blank=True,
+        validators=[slug_validator],
+    )
+    clicks = models.PositiveIntegerField(verbose_name="Количество переходов", default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_short_url(self):
+        return reverse('self_storage:redirect_to_long', kwargs={'code': self.short_code})
+
+    class Meta:
+        verbose_name = "Короткая ссылка"
+        verbose_name_plural = "Короткие ссылки"

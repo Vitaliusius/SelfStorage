@@ -1,14 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
+from django.db.models import F
 from .services.forms import LoginForm, RegisterForm
 from .services.backends import normalize_phone
 
 from django.utils import timezone
 from datetime import timedelta
 from django.core.exceptions import ValidationError
-from .models import Box, Order, Warehouse
+from .models import Box, Order, Warehouse, ShortLink
 
 
 def index(request):
@@ -168,3 +169,10 @@ def my_rent(request):
             "orders": user_orders,
         },
     )
+
+
+def redirect_view(request, code):
+    link = get_object_or_404(ShortLink, short_code=code)
+    ShortLink.objects.filter(id=link.id).update(clicks=F('clicks') + 1)
+    
+    return redirect(link.original_url)

@@ -12,4 +12,5 @@ urlpatterns = [
     path("register/", views.register_view, name="register"),
     path("logout/", views.logout_view, name="logout"),
     path('rental/', views.rental_request, name='rental'),
+    path('link/<slug:code>/', views.redirect_view, name='redirect_to_long'),
 ]

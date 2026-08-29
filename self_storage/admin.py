@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Box, Lead, Order, User, Warehouse
+from .models import Box, Lead, Order, User, Warehouse, ShortLink
 from django.utils.html import format_html
 
 
@@ -109,3 +109,17 @@ class LeadAdmin(admin.ModelAdmin):
     search_fields = ("email", "phone")
     list_editable = ("is_processed",)
     readonly_fields = ("created_at",)
+
+
+@admin.register(ShortLink)
+class ShortLinkAdmin(admin.ModelAdmin):
+    list_display = ('short_code', 'original_url', 'display_short_url', 'clicks', 'created_at')
+    fields = ('original_url', 'short_code', 'clicks', 'display_short_url')
+    readonly_fields = ('clicks', 'display_short_url')
+
+    @admin.display(description="Готовая короткая ссылка")
+    def display_short_url(self, obj):
+        if obj.id:
+            url = obj.get_short_url()
+            return format_html('<a href="{0}" target="_blank">{0}</a>', url)
+        return "Появится после сохранения"
