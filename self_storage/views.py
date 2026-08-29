@@ -9,34 +9,80 @@ from .services.backends import normalize_phone
 from django.utils import timezone
 from datetime import timedelta
 from django.core.exceptions import ValidationError
-from .models import Box, Order, Warehouse, ShortLink
+from .models import Box, Order, Warehouse, Lead, ShortLink
+
 
 
 def index(request):
+    if request.method == "POST":
+        email = (request.POST.get("EMAIL1") or request.POST.get("EMAIL2") or "").strip()
+        phone = (request.POST.get("PHONE1") or request.POST.get("PHONE2") or "").strip()
+
+        if not email and not phone:
+            messages.error(request, "Пожалуйста, укажите email или номер телефона.")
+            return redirect("self_storage:index")
+
+        try:
+            Lead.objects.create(
+                email=email,
+                phone=phone
+            )
+            messages.success(request, "Спасибо! Заявка принята, мы свяжемся с вами в ближайшее время.")
+        except Exception:
+            messages.error(request, "Произошла ошибка при отправке заявки. Попробуйте еще раз.")
+
+        return redirect("self_storage:index")
+
     return render(request, "index.html")
 
 
 def boxes(request):
+    if request.method == "POST":
+        email = request.POST.get("EMAIL1", "").strip()
+        phone = request.POST.get("PHONE", "").strip()
+
+        if not email and not phone:
+            messages.error(request, "Пожалуйста, укажите email или номер телефона.")
+            return redirect("self_storage:boxes")
+
+        try:
+            Lead.objects.create(
+                email=email,
+                phone=phone
+            )
+            messages.success(request, "Спасибо! Заявка принята, мы свяжемся с вами в ближайшее время.")
+        except Exception as e:
+            messages.error(request, "Произошла ошибка при отправке заявки. Попробуйте еще раз.")
+
+        return redirect("self_storage:boxes")
+
     warehouses = Warehouse.objects.all()
     all_boxes = Box.objects.filter(status='free')
     warehouse_filter = request.GET.get('warehouse', '')
 
-    boxes_to3 = all_boxes.filter(area__lte=3)
-    boxes_to10 = all_boxes.filter(area__gt=3, area__lte=10)
-    boxes_from10 = all_boxes.filter(area__gt=10)
+    city_map = {
+        'москва': 'Москва',
+        'одинцово': 'Одинцово',
+        'пушкино': 'Пушкино',
+        'люберцы': 'Люберцы',
+        'домодедово': 'Домодедово',
+        'moscow': 'Москва',
+        'moskva': 'Москва',
+        'odintsovo': 'Одинцово',
+        'pushkino': 'Пушкино',
+        'lubertsi': 'Люберцы',
+        'domodedovo': 'Домодедово',
+    }
 
-    if warehouse_filter == 'moscow':
-        boxes = all_boxes.filter(warehouse__city='Москва')
-    elif warehouse_filter == 'odintsovo':
-        boxes = all_boxes.filter(warehouse__city='Одинцово')
-    elif warehouse_filter == 'pushkino':
-        boxes = all_boxes.filter(warehouse__city='Пушкино')
-    elif warehouse_filter == 'lubertsi':
-        boxes = all_boxes.filter(warehouse__city='Люберцы')
-    elif warehouse_filter == 'domodedovo':
-        boxes = all_boxes.filter(warehouse__city='Домодедово')
+    city = city_map.get(warehouse_filter)
+    if city:
+        boxes = all_boxes.filter(warehouse__city=city)
     else:
         boxes = all_boxes
+
+    boxes_to3 = boxes.filter(area__lte=3)
+    boxes_to10 = boxes.filter(area__gt=3, area__lte=10)
+    boxes_from10 = boxes.filter(area__gt=10)
 
     return render(request, "boxes.html", {
         "boxes": boxes,

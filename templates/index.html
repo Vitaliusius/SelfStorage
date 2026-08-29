@@ -147,12 +147,28 @@
 		<div class="col-12 col-lg-6 mb-3 mb-lg-0">
 			<h1 class="fw-bold SelfStorage_green mb-5">Доставка и бережное хранение ваших вещей</h1>
 			<h4 class="fw-lighter SelfStorage_grey mb-5">Аренда бокса на любой срок Бесплатная доставка от вашего дома</h4>
-			<form method="post" action="{% url 'self_storage:boxes' %}">
-				{% csrf_token %}
-				<input type="text" required name="EMAIL1" class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Укажите ваш e-mail">
-				<button type="submit" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Рассчитать стоимость</button>
-				<span class="text-center fw-light">Нажимая на кнопку, вы подтверждаете свое <a href="{% static 'docs/pd_agreement.pdf' %}" class="link-dark">согласие на обработку персональных данных</a></span>
-			</form>
+            <form method="post" action="{% url 'self_storage:index' %}">
+	            {% csrf_token %}
+	            <input
+		            type="email"
+		            name="EMAIL1"
+		            class="form-control border-8 mb-3 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
+		            placeholder="Укажите ваш e-mail"
+	            >
+	            <input
+		            type="tel"
+		            required
+		            name="PHONE1"
+		            class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
+		            placeholder="Номер телефона"
+	            >
+	            <button type="submit" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
+		            Рассчитать стоимость
+	            </button>
+	            <span class="text-center fw-light mt-2 d-block">
+		            Нажимая на кнопку, вы подтверждаете свое <a href="{% static 'docs/pd_agreement.pdf' %}" class="link-dark">согласие на обработку персональных данных</a>
+	            </span>
+            </form>
 		</div>
 		<div class="col-12 col-lg-6 SelfStorage__img"></div>
 	</article>
@@ -395,8 +411,8 @@
 			<p><a href="#" class="link-dark text-decoration-none">Отзывы</a></p>
 		</div>
 		<div class="col-6 col-md-4 d-flex flex-column">
-			<p><a href="#" class="link-dark text-decoration-none">Политика конфиденциальности</a></p>
-			<p><a href="#" class="link-dark text-decoration-none">Правовые документы</a></p>
+			<p><a href="{% static 'docs/pd_agreement.pdf' %}" class="link-dark text-decoration-none">Политика конфиденциальности</a></p>
+			<p><a href="{% static 'docs/pd_agreement.pdf' %}" class="link-dark text-decoration-none">Правовые документы</a></p>
 			<p><a href="#" class="link-dark text-decoration-none">Контакты</a></p>
 		</div>
 		<h6 class="SelfStorage_grey text-center mt-5">© 2026 SelfStorage. Все права защищены.</h6>
