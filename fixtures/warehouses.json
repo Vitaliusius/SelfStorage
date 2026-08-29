@@ -1,0 +1,77 @@
+[
+  {
+      "model": "self_storage.warehouse",
+      "pk": 1,
+      "fields": {
+          "city": "Москва",
+          "address": "ул. Рокотова, д. 15",
+          "temperature": "+17 °С",
+          "ceiling_height": "3.5",
+          "advantage": "Рядом с метро",
+          "description": "",
+          "contacts": "",
+          "directions": "",
+          "image": "warehouses/image11.png"
+      }
+  },
+  {
+      "model": "self_storage.warehouse",
+      "pk": 2,
+      "fields": {
+          "city": "Одинцово",
+          "address": "ул. Северная, д. 36",
+          "temperature": "+18 °С",
+          "ceiling_height": "3.5",
+          "advantage": "Парковка",
+          "description": "",
+          "contacts": "",
+          "directions": "",
+          "image": "warehouses/image9.png"
+      }
+  },
+  {
+      "model": "self_storage.warehouse",
+      "pk": 3,
+      "fields": {
+          "city": "Пушкино",
+          "address": "ул. Строителей, д. 5",
+          "temperature": "+20 °С",
+          "ceiling_height": "5.5",
+          "advantage": "Высокие потолки",
+          "description": "",
+          "contacts": "",
+          "directions": "",
+          "image": "warehouses/image15.png"
+      }
+  },
+  {
+      "model": "self_storage.warehouse",
+      "pk": 4,
+      "fields": {
+          "city": "Люберцы",
+          "address": "ул. Советская, д. 88",
+          "temperature": "+18 °С",
+          "ceiling_height": "3.5",
+          "advantage": "Осталось мало боксов",
+          "description": "",
+          "contacts": "",
+          "directions": "",
+          "image": "warehouses/image151.png"
+      }
+  },
+  {
+      "model": "self_storage.warehouse",
+      "pk": 5,
+      "fields": {
+          "city": "Домодедово",
+          "address": "ул. Орджоникидзе, д. 29",
+          "temperature": "+21 °С",
+          "ceiling_height": "4.5",
+          "advantage": "Большие боксы",
+          "description": "",
+          "contacts": "",
+          "directions": "",
+          "image": "warehouses/image16.png"
+      }
+  }
+]

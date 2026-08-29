@@ -1,0 +1,145 @@
+[
+    {
+        "model": "self_storage.box",
+        "pk": 1,
+        "fields": {
+            "warehouse": 1,
+            "number": "1389-11",
+            "floor": 1,
+            "area": "2.0",
+            "dimensions": "2 х 1 х 2.5 м",
+            "price": "2264.00",
+            "status": "free"
+        }
+    },
+    {
+        "model": "self_storage.box",
+        "pk": 2,
+        "fields": {
+            "warehouse": 1,
+            "number": "2389-13",
+            "floor": 2,
+            "area": "3.0",
+            "dimensions": "2 х 2 х 2.5 м",
+            "price": "2561.00",
+            "status": "free"
+        }
+    },
+    {
+        "model": "self_storage.box",
+        "pk": 3,
+        "fields": {
+            "warehouse": 1,
+            "number": "1234-56",
+            "floor": 1,
+            "area": "4.0",
+            "dimensions": "2 х 4 х 2.5 м",
+            "price": "3456.00",
+            "status": "free"
+        }
+    },
+    {
+        "model": "self_storage.box",
+        "pk": 4,
+        "fields": {
+            "warehouse": 2,
+            "number": "2389-12",
+            "floor": 2,
+            "area": "3.0",
+            "dimensions": "2 х 2 х 2.5 м",
+            "price": "2264.00",
+            "status": "free"
+        }
+    },
+    {
+        "model": "self_storage.box",
+        "pk": 5,
+        "fields": {
+            "warehouse": 2,
+            "number": "1456-78",
+            "floor": 1,
+            "area": "5.0",
+            "dimensions": "3 х 3 х 2.5 м",
+            "price": "3456.00",
+            "status": "free"
+        }
+    },
+    {
+        "model": "self_storage.box",
+        "pk": 6,
+        "fields": {
+            "warehouse": 3,
+            "number": "7890-11",
+            "floor": 1,
+            "area": "2.5",
+            "dimensions": "2 х 1.5 х 2.5 м",
+            "price": "2154.00",
+            "status": "free"
+        }
+    },
+    {
+        "model": "self_storage.box",
+        "pk": 7,
+        "fields": {
+            "warehouse": 3,
+            "number": "7890-12",
+            "floor": 2,
+            "area": "4.0",
+            "dimensions": "2 х 2.5 х 2.5 м",
+            "price": "2890.00",
+            "status": "free"
+        }
+    },
+    {
+        "model": "self_storage.box",
+        "pk": 8,
+        "fields": {
+            "warehouse": 4,
+            "number": "2335-10",
+            "floor": 1,
+            "area": "3.0",
+            "dimensions": "2 х 2 х 2.5 м",
+            "price": "1408.00",
+            "status": "free"
+        }
+    },
+    {
+        "model": "self_storage.box",
+        "pk": 9,
+        "fields": {
+            "warehouse": 4,
+            "number": "2335-11",
+            "floor": 2,
+            "area": "5.0",
+            "dimensions": "3 х 3 х 2.5 м",
+            "price": "2560.00",
+            "status": "free"
+        }
+    },
+    {
+        "model": "self_storage.box",
+        "pk": 10,
+        "fields": {
+            "warehouse": 5,
+            "number": "5678-90",
+            "floor": 1,
+            "area": "6.0",
+            "dimensions": "3 х 2.5 х 2.5 м",
+            "price": "2988.00",
+            "status": "free"
+        }
+    },
+    {
+        "model": "self_storage.box",
+        "pk": 11,
+        "fields": {
+            "warehouse": 5,
+            "number": "5678-91",
+            "floor": 2,
+            "area": "8.0",
+            "dimensions": "4 х 2.5 х 2.5 м",
+            "price": "3988.00",
+            "status": "free"
+        }
+    }
+]

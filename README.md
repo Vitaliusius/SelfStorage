@@ -16,7 +16,17 @@ pip install -r requirements.txt
 
 
 ```
-python main.py
+python manage.py runserver
+```
+
+## Загрузка справочных данных (склады и боксы)
+
+```
+python manage.py loaddata fixtures/warehouses.json
+```
+
+```
+python manage.py loaddata fixtures/boxes.json
 ```
 
 ## Переменные окружения
