@@ -185,7 +185,7 @@
 						{% if warehouse.image %}
 							<img src="{{ warehouse.image.url }}" alt="{{ warehouse.city }}" width="270" height="98" class="mb-3 mb-lg-0" style="object-fit: cover;">
 						{% else %}
-							<img src="{% static 'img/placeholder_warehouse.png' %}" alt="{{ warehouse.city }}" class="mb-3 mb-lg-0" style="height: 60px; object-fit: contain;">
+							<img src="{% static 'img/image11.png' %}" alt="{{ warehouse.city }}" width="270" height="98" class="mb-3 mb-lg-0" style="object-fit: cover;">
 						{% endif %}
 					</div>
 					<div class="col-12 col-md-4 col-lg-3 d-flex flex-column justify-content-center">
@@ -214,78 +214,69 @@
 			</li>
 			{% endfor %}
 		</ul>
-		<script>
-			document.getElementById('pills-Moscow-tab').addEventListener('click', () => {
-				document.getElementById('toBox').click()
-			})
-			document.getElementById('pills-Odintsovo-tab').addEventListener('click', () => {
-				document.getElementById('toBox').click()
-			})
-			document.getElementById('pills-Pushkino-tab').addEventListener('click', () => {
-				document.getElementById('toBox').click()
-			})
-			document.getElementById('pills-Lubertsi-tab').addEventListener('click', () => {
-				document.getElementById('toBox').click()
-			})
-			document.getElementById('pills-Domodedovo-tab').addEventListener('click', () => {
-				document.getElementById('toBox').click()
-			})
-		</script>
 	</article>
 
 	<article class="pt-header" id="BOX">
 		<div class="tab-content" id="boxes-content">
-			<!-- Москва -->
 			<div class="tab-pane fade show active" id="pills-warehouse" role="tabpanel">
 				{% for warehouse in warehouses %}
 					{% if selected_warehouse == warehouse.city|lower or not selected_warehouse and forloop.first %}
 					<h1 class="text-center mb-4 fw-bold">{{ warehouse.city }}, {{ warehouse.address }}</h1>
 					<div class="row d-flex flex-column mb-5">
 						<div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-between align-self-center">
-							<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Контакты" data-bs-content="Список контактов">
+							<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Контакты" data-bs-content="{{ warehouse.contacts|default:'Список контактов' }}">
 								Контакты
 							</a>
-							<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Описание" data-bs-content="Текст описания">
+							<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Описание" data-bs-content="{{ warehouse.description|default:'Текст описания' }}">
 								Описание
 							</a>
-							<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Проезд" data-bs-content="Описание проезда">
+							<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Проезд" data-bs-content="{{ warehouse.directions|default:'Описание проезда' }}">
 								Проезд
 							</a>
 						</div>
 					</div>
 					<div class="row">
-					<div class="col-12 col-lg-6">
-						<div id="carouselExampleControls1" class="carousel slide" data-bs-ride="carousel">
-							<div class="carousel-inner">
-								<div class="carousel-item active">
-									<div class="d-flex flex-column align-items-center">
-										<img src="{% static 'img/image2.png' %}" alt="">
+						<div class="col-12 col-lg-6">
+							<div id="carouselExampleControls1" class="carousel slide" data-bs-ride="carousel">
+								<div class="carousel-inner">
+									<div class="carousel-item active">
+										<div class="d-flex flex-column align-items-center">
+											{% if warehouse.image %}
+												<img
+													src="{{ warehouse.image.url }}"
+													alt="{{ warehouse.city }}"
+													class="d-block w-100 rounded-3"
+													style="max-height: 400px; object-fit: cover;"
+												>
+											{% else %}
+												<img
+													src="{% static 'img/image2.png' %}"
+													alt="{{ warehouse.city }}"
+													class="d-block w-100 rounded-3"
+													style="max-height: 400px; object-fit: cover;"
+												>
+											{% endif %}
+										</div>
 									</div>
 								</div>
-								<div class="carousel-item">
-									<div class="d-flex flex-column align-items-center">
-										<img src="{% static 'img/image2.png' %}" alt="">
-									</div>
+								<div class="w-100 d-flex justify-content-center my-3">
+									<button data-bs-target="#carouselExampleControls1" data-bs-slide="prev" class="btn rounded-pill d-flex justify-content-center align-items-center SelfStorage__bg_green" style="width: 66px; height: 66px;">
+										<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fff" class="bi bi-chevron-left" viewBox="0 0 16 16">
+											<path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+										</svg>
+									</button>
+									<div style="width: 1rem"></div>
+									<button data-bs-target="#carouselExampleControls1" data-bs-slide="next" class="btn rounded-pill d-flex justify-content-center align-items-center SelfStorage__bg_green" style="width: 66px; height: 66px;">
+										<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fff" class="bi bi-chevron-right" viewBox="0 0 16 16">
+											<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+										</svg>
+									</button>
 								</div>
-							</div>
-							<div class="w-100 d-flex justify-content-center my-3">
-								<button data-bs-target="#carouselExampleControls1" data-bs-slide="prev" class="btn rounded-pill d-flex justify-content-center align-items-center SelfStorage__bg_green" style="width: 66px; height: 66px;">
-									<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fff" class="bi bi-chevron-left" viewBox="0 0 16 16">
-										<path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-									</svg>
-								</button>
-								<div style="width: 1rem"></div>
-								<button data-bs-target="#carouselExampleControls1" data-bs-slide="next" class="btn rounded-pill d-flex justify-content-center align-items-center SelfStorage__bg_green" style="width: 66px; height: 66px;">
-									<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fff" class="bi bi-chevron-right" viewBox="0 0 16 16">
-										<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-									</svg>
-								</button>
 							</div>
 						</div>
-					</div>
-					<div class="col-12 col-lg-6">
-						<div class="row">
-							<p class="text-center text-lg-start SelfStorage_grey">Доступ по QR</p>
+						<div class="col-12 col-lg-6">
+							<div class="row">
+								<p class="text-center text-lg-start SelfStorage_grey">Доступ по QR</p>
 								<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
 									<span class="fs_30 fw-bold SelfStorage_orange">{{ warehouse.temperature }}</span>
 									<span class="SelfStorage_grey mb-3">Температура на складе</span>
@@ -309,13 +300,14 @@
 									<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3 text-decoration-none text-center">Арендовать бокс</a>
 									<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
 								</div>
-							<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
+								<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
+							</div>
 						</div>
 					</div>
 					{% endif %}
             	{% endfor %}
-				</div>
 			</div>
+		</div>
 
 		<ul class="nav nav-pills pt-header d-flex justify-content-between" id="pills-tab" role="tablist">
 			<li class="nav-item flex-grow-1 mx-2" role="presentation">
