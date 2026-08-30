@@ -147,28 +147,28 @@
 		<div class="col-12 col-lg-6 mb-3 mb-lg-0">
 			<h1 class="fw-bold SelfStorage_green mb-5">Доставка и бережное хранение ваших вещей</h1>
 			<h4 class="fw-lighter SelfStorage_grey mb-5">Аренда бокса на любой срок Бесплатная доставка от вашего дома</h4>
-            <form method="post" action="{% url 'self_storage:boxes' %}">
-                {% csrf_token %}
-                <input
-                    type="email"
-                    name="EMAIL1"
-                    class="form-control border-8 mb-3 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
-                    placeholder="Укажите ваш e-mail"
-                >
-                <input
-                    type="tel"
-                    required
-                    name="PHONE"
-                    class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
-                    placeholder="Номер телефона"
-                >
-                <button type="submit" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
-                    Рассчитать стоимость
-                </button>
-                <span class="text-center fw-light mt-2 d-block">
-                    Нажимая на кнопку, вы подтверждаете свое <a href="{% static 'docs/pd_agreement.pdf' %}" class="link-dark">согласие на обработку персональных данных</a>
-                </span>
-            </form>
+			<form method="post" action="{% url 'self_storage:boxes' %}">
+				{% csrf_token %}
+				<input
+					type="email"
+					name="EMAIL1"
+					class="form-control border-8 mb-3 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
+					placeholder="Укажите ваш e-mail"
+				>
+				<input
+					type="tel"
+					required
+					name="PHONE"
+					class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
+					placeholder="Номер телефона"
+				>
+				<button type="submit" class="btn border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
+					Рассчитать стоимость
+				</button>
+				<span class="text-center fw-light mt-2 d-block">
+					Нажимая на кнопку, вы подтверждаете свое <a href="{% static 'docs/pd_agreement.pdf' %}" class="link-dark">согласие на обработку персональных данных</a>
+				</span>
+			</form>
 		</div>
 		<div class="col-12 col-lg-6 SelfStorage__img"></div>
 	</article>
@@ -236,42 +236,24 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-12 col-lg-6">
-							<div id="carouselExampleControls1" class="carousel slide" data-bs-ride="carousel">
-								<div class="carousel-inner">
-									<div class="carousel-item active">
-										<div class="d-flex flex-column align-items-center">
-											{% if warehouse.image %}
-												<img
-													src="{{ warehouse.image.url }}"
-													alt="{{ warehouse.city }}"
-													class="d-block w-100 rounded-3"
-													style="max-height: 400px; object-fit: cover;"
-												>
-											{% else %}
-												<img
-													src="{% static 'img/image2.png' %}"
-													alt="{{ warehouse.city }}"
-													class="d-block w-100 rounded-3"
-													style="max-height: 400px; object-fit: cover;"
-												>
-											{% endif %}
-										</div>
-									</div>
-								</div>
-								<div class="w-100 d-flex justify-content-center my-3">
-									<button data-bs-target="#carouselExampleControls1" data-bs-slide="prev" class="btn rounded-pill d-flex justify-content-center align-items-center SelfStorage__bg_green" style="width: 66px; height: 66px;">
-										<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fff" class="bi bi-chevron-left" viewBox="0 0 16 16">
-											<path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-										</svg>
-									</button>
-									<div style="width: 1rem"></div>
-									<button data-bs-target="#carouselExampleControls1" data-bs-slide="next" class="btn rounded-pill d-flex justify-content-center align-items-center SelfStorage__bg_green" style="width: 66px; height: 66px;">
-										<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fff" class="bi bi-chevron-right" viewBox="0 0 16 16">
-											<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-										</svg>
-									</button>
-								</div>
+						<!-- Блок с фотографией склада (без карусели и стрелок) -->
+						<div class="col-12 col-lg-6 mb-4 mb-lg-0">
+							<div class="d-flex flex-column align-items-center">
+								{% if warehouse.image %}
+									<img
+										src="{{ warehouse.image.url }}"
+										alt="{{ warehouse.city }}"
+										class="d-block w-100 rounded-3 shadow-sm"
+										style="max-height: 400px; object-fit: cover;"
+									>
+								{% else %}
+									<img
+										src="{% static 'img/image2.png' %}"
+										alt="{{ warehouse.city }}"
+										class="d-block w-100 rounded-3 shadow-sm"
+										style="max-height: 400px; object-fit: cover;"
+									>
+								{% endif %}
 							</div>
 						</div>
 						<div class="col-12 col-lg-6">
@@ -292,7 +274,7 @@
 										{% else %}
 											<span class="fs_30 fw-bold SelfStorage_orange">—</span>
 										{% endif %}
-                        			{% endwith %}
+									{% endwith %}
 									<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
 								</div>
 
@@ -305,7 +287,7 @@
 						</div>
 					</div>
 					{% endif %}
-            	{% endfor %}
+				{% endfor %}
 			</div>
 		</div>
 
@@ -345,7 +327,7 @@
 						</div>
 					</form>
 					{% empty %}
-    				<p class="text-center SelfStorage_grey fs_24">На данный момент свободных боксов нет.</p>
+					<p class="text-center SelfStorage_grey fs_24">На данный момент свободных боксов нет.</p>
 					{% endfor %}
 				</div>
 			</div>
@@ -369,8 +351,8 @@
 						</div>
 					</form>
 				{% empty %}
-        		<p class="text-center SelfStorage_grey fs_24">Нет боксов до 3 м².</p>
-        		{% endfor %}
+				<p class="text-center SelfStorage_grey fs_24">Нет боксов до 3 м².</p>
+				{% endfor %}
 			</div>
 
 			<div class="tab-pane fade" id="pills-to10" role="tabpanel" aria-labelledby="pills-to10-tab">
@@ -391,16 +373,16 @@
 							<button type="submit" class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</button>
 						</div>
 					</form>
-        		{% empty %}
-        		<p class="text-center SelfStorage_grey fs_24">Нет боксов до 10 м².</p>
+				{% empty %}
+				<p class="text-center SelfStorage_grey fs_24">Нет боксов до 10 м².</p>
 				{% endfor %}
 			</div>
 
 			<div class="tab-pane fade" id="pills-from10" role="tabpanel" aria-labelledby="pills-from10-tab">
 				{% for box in boxes_from10 %}
-            		<form method="post" action="{% url 'self_storage:rental' %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
-            			{% csrf_token %}
-            			<input type="hidden" name="box_id" value="{{ box.id }}">
+					<form method="post" action="{% url 'self_storage:rental' %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+						{% csrf_token %}
+						<input type="hidden" name="box_id" value="{{ box.id }}">
 						<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
 							<span class="SelfStorage_green fs_24 me-2">{{ box.floor }} эт.</span><span class="fs_24">№{{ box.number }}</span>
 						</div>
@@ -414,9 +396,9 @@
 							<button type="submit" class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</button>
 						</div>
 					</form>
-        		{% empty %}
-        		<p class="text-center SelfStorage_grey fs_24">Нет боксов от 10 м².</p>
-        		{% endfor %}
+				{% empty %}
+				<p class="text-center SelfStorage_grey fs_24">Нет боксов от 10 м².</p>
+				{% endfor %}
 			</div>
 		</div>
 	</article>
