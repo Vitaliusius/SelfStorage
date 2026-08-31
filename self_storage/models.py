@@ -218,7 +218,6 @@ class ShortLink(models.Model):
         verbose_name="Короткий код", 
         max_length=50, 
         unique=True,
-        blank=True,
         validators=[slug_validator],
     )
     clicks = models.PositiveIntegerField(verbose_name="Количество переходов", default=0)
