@@ -16,7 +16,7 @@ from .models import Box, Order, Warehouse, Lead, ShortLink
 def index(request):
     if request.method == "POST":
         email = (request.POST.get("EMAIL1") or request.POST.get("EMAIL2") or "").strip()
-        phone = (request.POST.get("PHONE1") or request.POST.get("PHONE2") or "").strip()
+        phone = (request.POST.get("PHONE1") or "").strip()
 
         if not email and not phone:
             messages.error(request, "Пожалуйста, укажите email или номер телефона.")
@@ -28,12 +28,24 @@ def index(request):
                 phone=phone
             )
             messages.success(request, "Спасибо! Заявка принята, мы свяжемся с вами в ближайшее время.")
-        except Exception:
+        except Exception as e:
+            print(f"❌ ОШИБКА: {e}")
+            print(f"❌ ТИП ОШИБКИ: {type(e)}")
             messages.error(request, "Произошла ошибка при отправке заявки. Попробуйте еще раз.")
 
         return redirect("self_storage:index")
 
-    return render(request, "index.html")
+    warehouses = Warehouse.objects.all()
+
+    default_warehouse = Warehouse.objects.filter(city='Одинцово').first()
+
+    if not default_warehouse:
+        default_warehouse = warehouses.first()
+
+    return render(request, "index.html", {
+        "warehouses": warehouses,
+        "warehouse": default_warehouse,
+    })
 
 
 def boxes(request):
